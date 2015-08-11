@@ -8,6 +8,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import scala.actors.threadpool.Arrays;
 
 /**
  * Represents an item with multiple, nondamageable subitems to be registered in FML
@@ -101,6 +102,10 @@ public class MojoMetaItem extends MojoItemBase {
 		this.tooltips = tooltips;
 		this.icons = new ArrayList<IIcon>();
 		this.setHasSubtypes(true); //set the subtypes bit
+	}
+	
+	public MojoMetaItem() {
+		this(DEFAULT_STACK_SIZE, DEFAULT_CREATIVE_TAB, DEFAULT_ITEMID, Arrays.asList(new String[] { DEFAULT_TOOLTIP }));
 	}
 	
 	/**

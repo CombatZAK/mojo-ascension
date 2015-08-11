@@ -30,6 +30,11 @@ public abstract class MojoItemBase extends Item {
 	protected static final String DEFAULT_TEXTURE_NAME = "mojo:texturename";
 	
 	/**
+	 * Stores the default tooltip text
+	 */
+	protected static final String DEFAULT_TOOLTIP = null;
+	
+	/**
 	 * The ID registered with Forge when adding the item
 	 */
 	protected String itemId;

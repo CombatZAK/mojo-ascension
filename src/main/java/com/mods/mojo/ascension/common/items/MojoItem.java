@@ -15,11 +15,6 @@ import net.minecraft.item.ItemStack;
 public class MojoItem extends MojoItemBase {
 	
 	/**
-	 * STores the default tooltip text
-	 */
-	protected static final String DEFAULT_TOOLTIP = null;
-	
-	/**
 	 * Helper text for item
 	 */
 	protected String tooltip;
