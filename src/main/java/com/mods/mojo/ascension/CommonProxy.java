@@ -1,5 +1,7 @@
 package com.mods.mojo.ascension;
 
+import com.mods.mojo.ascension.common.items.AscensionItems;
+
 /**
  * Performs environment-specific actions for Ascension mod; currently acts as server-side proxy
  * 

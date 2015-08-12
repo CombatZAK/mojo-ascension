@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -142,5 +143,18 @@ public class MojoMetaItem extends MojoItemBase {
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 		return this.getUnlocalizedName() + "." + stack.getItemDamage();
+	}
+	
+	/**
+	 * gets the highlighted tooltip based on metadata 
+	 */
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean para4) {
+		String tooltip = tooltips.get(stack.getItemDamage()); //get the tooltip based on metadata
+		if (tooltip == null) return; //no tooltip
+		
+		String[] tokens = tooltip.split("\n"); //divide up tooltip by lines
+		for (String token : tokens)
+			list.add(token);
 	}
 }
