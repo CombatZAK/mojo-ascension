@@ -2,6 +2,8 @@ package com.mods.mojo.ascension.common.items;
 
 import java.util.List;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -98,6 +100,7 @@ public class TokenItem extends MojoMetaItem {
 	 * Adds tooltip text based on metadata and owner
 	 */
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean para4) {
 		super.addInformation(stack, player, list, para4); //call parent tooltip method
 		String owner = getOwner(stack); //check if the stack has an owner

@@ -2,6 +2,8 @@ package com.mods.mojo.ascension.common.items;
 
 import java.util.List;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -74,6 +76,7 @@ public class MojoItem extends MojoItemBase {
 	 * Adds the tooltip text to the item when it's moused over
 	 */
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean para4) {
 		if (tooltip == null || tooltip == "") return; //no need to add blank text
 		String[] tokens = tooltip.split("\n"); //split the tooltip into lines
