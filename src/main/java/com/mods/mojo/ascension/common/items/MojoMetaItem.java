@@ -3,6 +3,10 @@ package com.mods.mojo.ascension.common.items;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mods.mojo.ascension.Ascension;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -113,10 +117,11 @@ public class MojoMetaItem extends MojoItemBase {
 	 * Registers the icons for each subitem
 	 */
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister registry) {
 		this.icons.clear(); //reset the textures
 		for (int i = 0; i < this.tooltips.size(); i++) {
-			this.icons.add(registry.registerIcon(getUnlocalizedName() + "." + i)); //read the icon and store it
+			this.icons.add(registry.registerIcon("ascension" + ":" + getUnlocalizedName() + "." + i)); //read the icon and store it
 		}
 	}
 	
@@ -149,6 +154,7 @@ public class MojoMetaItem extends MojoItemBase {
 	 * gets the highlighted tooltip based on metadata 
 	 */
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean para4) {
 		String tooltip = tooltips.get(stack.getItemDamage()); //get the tooltip based on metadata
 		if (tooltip == null) return; //no tooltip
