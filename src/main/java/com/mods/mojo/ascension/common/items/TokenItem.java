@@ -2,6 +2,8 @@ package com.mods.mojo.ascension.common.items;
 
 import java.util.List;
 
+import com.mods.mojo.ascension.common.items.use.IUseHandler;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,8 +22,43 @@ import scala.actors.threadpool.Arrays;
  *
  */
 public class TokenItem extends MojoMetaItem {
-	public TokenItem(int stackSize, CreativeTabs creativeTab, String itemId, List<String> tooltips) {
+	/**
+	 * Function for dealing with use of item
+	 */
+	private IUseHandler useHandler;
+	
+	/**
+	 * Gets the handler for item-use
+	 * 
+	 * @return handler
+	 */
+	public IUseHandler getUseHandler() {
+		return useHandler;
+	}
+	
+	/**
+	 * Sets the handler for item-use
+	 * 
+	 * @param value handler
+	 */
+	public void setUseHandler(IUseHandler value) {
+		this.useHandler = value;
+	}
+	
+	/**
+	 * Self-referentially sets the handler for item use
+	 * 
+	 * @param value handler
+	 * @return self-reference
+	 */
+	public TokenItem withUseHandler(IUseHandler value) {
+		this.setUseHandler(value);
+		return this;
+	}
+	
+	public TokenItem(int stackSize, CreativeTabs creativeTab, String itemId, List<String> tooltips, IUseHandler useHandler) {
 		super(stackSize, creativeTab, itemId, tooltips);
+		this.useHandler = useHandler;
 	}
 	
 	/**
@@ -105,5 +142,18 @@ public class TokenItem extends MojoMetaItem {
 		
 		list.add(""); //line break
 		list.add("§oBound to " + owner + "§r"); //display owner
+	}
+	
+	/**
+	 * Executed when player holds item and right clicks
+	 */
+	@Override
+	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+		if (world.isRemote) return stack; //do nothing unless dealing with the server
+		if (stack.stackSize == 0) return stack; //do nothing with an empty stack
+		
+		stack = this.useHandler.rightClick(stack.copy(), world, player); //call the item's handler
+		
+		return stack; //adjust the item stack
 	}
 }
