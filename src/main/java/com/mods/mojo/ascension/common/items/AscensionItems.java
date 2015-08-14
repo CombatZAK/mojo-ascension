@@ -1,5 +1,7 @@
 package com.mods.mojo.ascension.common.items;
 
+import com.mods.mojo.ascension.common.items.use.TokenUseHandler;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
@@ -27,16 +29,12 @@ public class AscensionItems {
 			"§f§oThe ending has not yet been written...§r\n\n" +
 					"Using this item will grant you op privileges\n" +
 					"on the server §lfor GM purposes only§r§f.\n" +
-					"Abusing the privilege will result in a permanent\n" +
-					"administrative ban from this and all future versions.\n" +
-					"of ZakRealms\n" +
 					"Refer to the GM Ticket document for more details.\n\n" +
 					"§4§oFeature not yet implemented; coming soon.§r", //GM Ticket
 			"§9§oEveryone needs a little help sometimes.§r\n\n" +
-					"Using this item will consume it and\n"+
-					"grant you an admin-save to be used at your discretion.\n\n" +
+					"Use to gain an additional admin-save.\n\n" +
 					"§4§oFeature not yet implemented; coming soon§r" //admin save token
-		})
+		}), new TokenUseHandler()
 	);
 	
 	/**
