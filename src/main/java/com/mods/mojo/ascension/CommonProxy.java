@@ -1,6 +1,9 @@
 package com.mods.mojo.ascension;
 
 import com.mods.mojo.ascension.common.items.AscensionItems;
+import com.mods.mojo.ascension.events.handlers.LivingSetAttackTargetHandler;
+
+import net.minecraftforge.common.MinecraftForge;
 
 /**
  * Performs environment-specific actions for Ascension mod; currently acts as server-side proxy
@@ -27,6 +30,6 @@ public class CommonProxy {
 	 * Run during mod post-initialization
 	 */
 	public void postInit() {
-		//TODO: stub
+		MinecraftForge.EVENT_BUS.register(new LivingSetAttackTargetHandler()); //register the overrides to hostility
 	}
 }

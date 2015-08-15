@@ -89,6 +89,7 @@ public class TokenItem extends MojoMetaItem {
 	 * @param player player that will own it
 	 */
 	public static void setOwner(ItemStack stack, EntityPlayer player) {
+		
 		if (stack == null || player == null) return; //no player/item
 		
 		if (stack.stackTagCompound == null) stack.stackTagCompound = new NBTTagCompound(); //gen a new tag
@@ -121,6 +122,7 @@ public class TokenItem extends MojoMetaItem {
 	 */
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity holder, int arg1, boolean arg2) {
+		if (world.isRemote) return; //only run on server
 		if (holder == null || !(holder instanceof EntityPlayer)) return; //if item is not held by a player, stop
 		if (getOwner(stack) != null) return; //stop if the item already has an owner
 		

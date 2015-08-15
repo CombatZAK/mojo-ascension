@@ -3,4 +3,4 @@ item.token.1.name=§4Seal of the Dark Pact§r
 item.token.2.name=§eGM Ticket§r
 item.token.3.name=§eAdmin-Save Token§r
 
-death.attack.ascensionToken="%1$s meddled with things that do not belong to them."
+death.attack.ascensionToken=%1$s meddled with things that do not belong to them.
