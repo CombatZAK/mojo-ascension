@@ -19,7 +19,7 @@ public class Ascension {
 	public static final String MODID = "mojo-ascension"; //unique mod id
 	public static final String MOD_NAME = "Mojo-Ascension"; //Mod friendly name
 	public static final String MOD_VERSION = "0.0.0"; //Mod version
-	public static final String DEPENDENCIES = ""; //parent and child requirements
+	public static final String DEPENDENCIES = "required-after:Thaumcraft"; //parent and child requirements
 	
 	@Instance
 	public static Ascension instance; //Mod singleton instance
