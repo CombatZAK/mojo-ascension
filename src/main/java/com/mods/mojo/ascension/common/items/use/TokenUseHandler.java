@@ -107,7 +107,7 @@ public class TokenUseHandler implements IUseHandler {
 	private static boolean useTicket(EntityPlayer player) {
 		ServerConfigurationManager mgr = MinecraftServer.getServer().getConfigurationManager();
 		
-		if (mgr.func_152607_e(player.getGameProfile())) {
+		if (mgr.func_152603_m().func_152700_a(player.getDisplayName()) != null) {
 			player.addChatMessage(new ChatComponentText("§fYou are already OPed§r"));
 			return false;
 		}

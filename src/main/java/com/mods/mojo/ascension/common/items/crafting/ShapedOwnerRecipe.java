@@ -133,7 +133,7 @@ public class ShapedOwnerRecipe extends ShapedRecipes {
                     }
                     
                     String owner = OwnerRecipeHelper.getOwner(itemstack1);
-                    if (!OwnerRecipeHelper.isCreative(player) && owner != null && owner != player.getDisplayName()) return false; //if there is not a player crafting and the player is not creative and doesn't own the item; reject
+                    if (!OwnerRecipeHelper.isCreative(player) && owner != null && !owner.equals(player.getDisplayName())) return false; //if there is not a player crafting and the player is not creative and doesn't own the item; reject
                 }
             }
         }

@@ -29,7 +29,7 @@ public class ShapelessOreOwnerRecipe extends ShapelessOreRecipe {
 		for (int i = 0; i < grid.getSizeInventory(); i++) {
 			ItemStack stack = grid.getStackInSlot(i);
 			String owner = OwnerRecipeHelper.getOwner(stack);
-			if (owner != null && owner != player.getDisplayName()) return false; //player must own item
+			if (owner != null && !owner.equals(player.getDisplayName())) return false; //player must own item
 		}
 		
 		return true;
