@@ -1,5 +1,7 @@
 package com.mods.mojo.ascension;
 
+import com.mods.mojo.ascension.common.config.ConfigHelper;
+
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -36,6 +38,8 @@ public class Ascension {
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		proxy.preInit();
+		
+		ConfigHelper.loadConfig(event.getSuggestedConfigurationFile());
 	}
 	
 	/**

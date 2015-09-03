@@ -1,8 +1,11 @@
 package com.mods.mojo.ascension.common.items.use;
 
+import com.mods.mojo.ascension.common.config.ConfigHelper;
 import com.mods.mojo.ascension.common.items.TokenItem;
 
+import ibxm.Player;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -10,6 +13,7 @@ import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 
 /**
  * Handles using a token
@@ -24,7 +28,7 @@ public class TokenUseHandler implements IUseHandler {
 	 */
 	@Override
 	public ItemStack rightClick(ItemStack stack, World world, EntityPlayer player) {
-		if (world.isRemote || stack.stackSize == 0) return stack; //exit conditions
+		if (stack.stackSize == 0) return stack; //exit conditions
 		
 		boolean consumeToken = false; //should decrement stack?
 		boolean validOwner = false;
@@ -35,14 +39,17 @@ public class TokenUseHandler implements IUseHandler {
 			case 1: //Seal of the Dark Pact
 				consumeToken = checkOwner(stack, player);
 				if (consumeToken) consumeToken = useSeal(player);
+				if (consumeToken) doDarkTeleport(player, world);
 				break;
 				
 			case 2: //GM Ticket
+				if (world.isRemote) return stack;
 				consumeToken = checkOwner(stack, player);
 				if (consumeToken) consumeToken = useTicket(player);
 				break;
 				
 			case 3: //admin-save token
+				if (world.isRemote) return stack;
 				consumeToken = checkOwner(stack, player);
 				if (consumeToken) useAST(player);
 				break;
@@ -66,12 +73,30 @@ public class TokenUseHandler implements IUseHandler {
 		String ownerName = TokenItem.getOwner(tokenStack); //get the owner
 		
 		if (!holderName.equals(ownerName)) {
+			if (holder.worldObj.isRemote) return false;
 			holder.attackEntityFrom(new DamageSource("ascensionToken").setDamageBypassesArmor().setDamageIsAbsolute(), 2); //hurt the player
 			holder.addChatMessage(new ChatComponentText("§4§oThis does not belong to you.§r"));
 			return false;
 		}
 		
 		return true;
+	}
+	
+	/**
+	 * "Banishes" a player to the dark dimension
+	 * 
+	 * @param target player to banish
+	 * @param world world where player currently exists
+	 */
+	private static void doDarkTeleport(EntityPlayer target, World world) {
+		if (world.isRemote) {
+			
+		}
+		
+		WorldServer worldServer = (WorldServer)world;
+		EntityPlayerMP targetMP = (EntityPlayerMP)target;
+		targetMP.mcServer.getConfigurationManager().transferPlayerToDimension(targetMP, ConfigHelper.darkDimension);
+		targetMP.setPositionAndUpdate(ConfigHelper.darkPointX, ConfigHelper.darkPointY, ConfigHelper.darkPointZ);
 	}
 	
 	/**
@@ -90,8 +115,6 @@ public class TokenUseHandler implements IUseHandler {
 		
 		ascensionData.setBoolean("isEvil", true); //set the tag
 		MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentText("§4§o" + player.getDisplayName() + " has consigned themselves to madness.§r"));
-		
-		//TODO: implement teleport
 		
 		if (!customData.hasKey("ascensionData")) customData.setTag("ascensionData",  ascensionData); //populate the tag if it isn't already
 		
