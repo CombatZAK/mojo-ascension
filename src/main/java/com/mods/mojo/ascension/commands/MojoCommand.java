@@ -7,6 +7,7 @@ import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.dedicated.DedicatedServer;
 
 /**
  * Generic implementation of command
@@ -33,7 +34,7 @@ public abstract class MojoCommand implements ICommand {
 	 */
 	public static boolean isPlayerOpped(EntityPlayer player) {
 		if (player == null) return false;
-		return MinecraftServer.getServer().getConfigurationManager().func_152596_g(player.getGameProfile());
+		return MinecraftServer.getServer().getConfigurationManager().func_152603_m().func_152700_a(player.getDisplayName()) != null;
 	}
 	
 	/**
@@ -88,7 +89,7 @@ public abstract class MojoCommand implements ICommand {
 		if (commandProtection == ProtectionLevel.NONE) return true; //no command protection
 		String senderName = sender.getCommandSenderName(); //get the sender name
 		
-		if (senderName == "Rcon") return true; //server command
+		if (sender instanceof DedicatedServer) return true; //server command
 		if (commandProtection == ProtectionLevel.SERVER) return false; //server command only; not issued by server
 		
 		EntityPlayer player = (EntityPlayer)sender; //cast sender as player

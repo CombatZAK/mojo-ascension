@@ -1,6 +1,10 @@
 package com.mods.mojo.ascension;
 
+<<<<<<< HEAD
 import com.mods.mojo.ascension.common.config.ConfigHelper;
+=======
+import com.mods.mojo.ascension.commands.CommandAST;
+>>>>>>> origin/master
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -9,6 +13,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
 /**
  * Ascension mod class registered mod information with FML
@@ -60,5 +65,15 @@ public class Ascension {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		proxy.postInit();
+	}
+	
+	/**
+	 * Handles the server starting event
+	 * 
+	 * @param event args
+	 */
+	@EventHandler
+	public void serverStarting(FMLServerStartingEvent event) {
+		event.registerServerCommand(new CommandAST()); //register the ast command
 	}
 }

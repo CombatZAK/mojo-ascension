@@ -46,7 +46,7 @@ public class ShapelessOwnerRecipe extends ShapelessRecipes {
 		for (int i = 0; i < grid.getSizeInventory(); i++) { //go through all the slots in the inventory
 			ItemStack craftitem = grid.getStackInSlot(i); //get the item in the slot
 			String owner = OwnerRecipeHelper.getOwner(craftitem); //get the owner of the item
-			if (owner != null && owner != player.getDisplayName()) return false; //player doesn't own item
+			if (owner != null && !owner.equals(player.getDisplayName())) return false; //player doesn't own item
 		}
 		
 		return true;

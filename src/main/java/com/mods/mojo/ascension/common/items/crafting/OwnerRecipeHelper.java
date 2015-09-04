@@ -14,7 +14,7 @@ import net.minecraft.server.MinecraftServer;
 import tconstruct.tools.inventory.CraftingStationContainer;
 
 public class OwnerRecipeHelper {
-	private OwnerRecipeHelper() {} //hide sconstructor; no instantiation
+	private OwnerRecipeHelper() {} //hide constructor; no instantiation
 	
 	/**
 	 * Checks the owner for an item
@@ -32,7 +32,7 @@ public class OwnerRecipeHelper {
 		if (!itemData.hasKey("owner")) return null;
 		
 		String result = itemData.getString("owner"); //get the owner
-		if (result == "") return null; //no empty strings
+		if (result.equals("")) return null; //no empty strings
 		return result;
 	}
 	
@@ -43,7 +43,7 @@ public class OwnerRecipeHelper {
 	 * @param owner owner of item
 	 */
 	public static void setOwner(ItemStack stack, String owner) {
-		if (stack == null || owner == null || owner == "") return; //skip null items, null/empty owners
+		if (stack == null || owner == null || owner.equals("")) return; //skip null items, null/empty owners
 		
 		if (stack.stackTagCompound == null) stack.stackTagCompound = new NBTTagCompound(); //populate data tag if necessary
 		NBTTagCompound itemData = stack.stackTagCompound.getCompoundTag("ascensionData"); //get the ascension tag
