@@ -1,10 +1,7 @@
 package com.mods.mojo.ascension;
 
-<<<<<<< HEAD
 import com.mods.mojo.ascension.common.config.ConfigHelper;
-=======
 import com.mods.mojo.ascension.commands.CommandAST;
->>>>>>> origin/master
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;

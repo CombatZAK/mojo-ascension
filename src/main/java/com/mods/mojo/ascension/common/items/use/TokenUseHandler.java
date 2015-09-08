@@ -1,11 +1,21 @@
 package com.mods.mojo.ascension.common.items.use;
 
+import java.util.Collection;
+
 import com.mods.mojo.ascension.common.config.ConfigHelper;
+
 import com.mods.mojo.ascension.common.items.TokenItem;
 
+import baubles.common.container.InventoryBaubles;
+import baubles.common.lib.PlayerHandler;
 import ibxm.Player;
+import micdoodle8.mods.galacticraft.api.inventory.AccessInventoryGC;
+import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -14,6 +24,16 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import tconstruct.api.IPlayerExtendedInventoryWrapper;
+import tconstruct.api.TConstructAPI;
+import thaumcraft.api.research.ResearchCategories;
+import thaumcraft.api.research.ResearchCategoryList;
+import thaumcraft.api.research.ResearchItem;
+import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.lib.network.PacketHandler;
+import thaumcraft.common.lib.network.playerdata.PacketSyncResearch;
+import thaumcraft.common.lib.network.playerdata.PacketSyncWipe;
+import travellersgear.api.TravellersGearAPI;
 
 /**
  * Handles using a token
@@ -29,6 +49,7 @@ public class TokenUseHandler implements IUseHandler {
 	@Override
 	public ItemStack rightClick(ItemStack stack, World world, EntityPlayer player) {
 		if (stack.stackSize == 0) return stack; //exit conditions
+		if (world.isRemote) return stack;
 		
 		boolean consumeToken = false; //should decrement stack?
 		boolean validOwner = false;
@@ -40,16 +61,16 @@ public class TokenUseHandler implements IUseHandler {
 				consumeToken = checkOwner(stack, player);
 				if (consumeToken) consumeToken = useSeal(player);
 				if (consumeToken) doDarkTeleport(player, world);
+				if (consumeToken && ConfigHelper.doLoseInventory) clearInventory(player);
+				
 				break;
 				
 			case 2: //GM Ticket
-				if (world.isRemote) return stack;
 				consumeToken = checkOwner(stack, player);
 				if (consumeToken) consumeToken = useTicket(player);
 				break;
 				
 			case 3: //admin-save token
-				if (world.isRemote) return stack;
 				consumeToken = checkOwner(stack, player);
 				if (consumeToken) useAST(player);
 				break;
@@ -73,7 +94,6 @@ public class TokenUseHandler implements IUseHandler {
 		String ownerName = TokenItem.getOwner(tokenStack); //get the owner
 		
 		if (!holderName.equals(ownerName)) {
-			if (holder.worldObj.isRemote) return false;
 			holder.attackEntityFrom(new DamageSource("ascensionToken").setDamageBypassesArmor().setDamageIsAbsolute(), 2); //hurt the player
 			holder.addChatMessage(new ChatComponentText("§4§oThis does not belong to you.§r"));
 			return false;
@@ -89,14 +109,67 @@ public class TokenUseHandler implements IUseHandler {
 	 * @param world world where player currently exists
 	 */
 	private static void doDarkTeleport(EntityPlayer target, World world) {
-		if (world.isRemote) {
-			
+		if (!ConfigHelper.doTeleport) {
+			world.playSoundAtEntity(target, "ascension:evilLaugh", 1.0F, 1.0F);
+			return; 
 		}
+		
+		world.playSoundToNearExcept(target, "ascension.evilLaugh", 1.0F, 1.0F);
 		
 		WorldServer worldServer = (WorldServer)world;
 		EntityPlayerMP targetMP = (EntityPlayerMP)target;
-		targetMP.mcServer.getConfigurationManager().transferPlayerToDimension(targetMP, ConfigHelper.darkDimension);
 		targetMP.setPositionAndUpdate(ConfigHelper.darkPointX, ConfigHelper.darkPointY, ConfigHelper.darkPointZ);
+		targetMP.mcServer.getConfigurationManager().transferPlayerToDimension(targetMP, ConfigHelper.darkDimension);
+		targetMP.mcServer.worldServerForDimension(ConfigHelper.darkDimension).playSoundAtEntity(targetMP, "ascension:evilLaugh", 1.0F, 1.0F);		
+	}
+	
+	/**
+	 * Deletes a player's entire inventory
+	 * 
+	 * @param target player who should lose all items
+	 */
+	private static void clearInventory(EntityPlayer target) {
+		//vanilla inventory
+		target.inventory.clearInventory(null, -1);
+		
+		//Baubles inventory
+		InventoryBaubles bInventory = new InventoryBaubles(target);
+		PlayerHandler.setPlayerBaubles(target, bInventory);
+		
+		//traveler's gear inventory
+		TravellersGearAPI.setExtendedInventory(target, new ItemStack[] {});
+		
+		//galacticraft inventory
+		InventoryExtended gcInventory = (InventoryExtended)AccessInventoryGC.getGCInventoryForPlayer((EntityPlayerMP)target);
+		for (int i = 0; i < gcInventory.getSizeInventory(); i++) {
+			gcInventory.setInventorySlotContents(i, null);
+		}
+		
+		//tconstruct inventory
+		IPlayerExtendedInventoryWrapper tcInventories = TConstructAPI.getInventoryWrapper(target);
+		IInventory knapsackInventory = tcInventories.getKnapsackInventory(target);
+		IInventory accessoryInventory = tcInventories.getAccessoryInventory(target);
+		for (int i = 0; i < knapsackInventory.getSizeInventory(); i++) {
+			knapsackInventory.setInventorySlotContents(i, null);
+		}
+		for (int i = 0; i < accessoryInventory.getSizeInventory(); i++) {
+			accessoryInventory.setInventorySlotContents(i, null);
+		}
+		
+		
+		//blow away entire thaumcraft history
+		Thaumcraft.proxy.getPlayerKnowledge().wipePlayerKnowledge(target.getDisplayName());
+		PacketHandler.INSTANCE.sendTo(new PacketSyncWipe(), (EntityPlayerMP)target);
+		Collection<ResearchCategoryList> rc = ResearchCategories.researchCategories.values();
+		for (ResearchCategoryList category : rc) {
+			Collection<ResearchItem> ri = category.research.values();
+			for (ResearchItem item : ri) {
+				if (item.isAutoUnlock()) {
+					Thaumcraft.proxy.getResearchManager().completeResearch(target, item.key);
+				}
+			}
+		}
+		PacketHandler.INSTANCE.sendTo(new PacketSyncResearch(target), (EntityPlayerMP)target);
 	}
 	
 	/**

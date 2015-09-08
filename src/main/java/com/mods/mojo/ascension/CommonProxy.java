@@ -1,6 +1,7 @@
 package com.mods.mojo.ascension;
 
 import com.mods.mojo.ascension.common.items.AscensionItems;
+import com.mods.mojo.ascension.common.items.crafting.RecipeHandler;
 import com.mods.mojo.ascension.events.handlers.LivingSetAttackTargetHandler;
 
 import net.minecraftforge.common.MinecraftForge;
@@ -23,7 +24,7 @@ public class CommonProxy {
 	 * Run during mod initialization
 	 */
 	public void init() {
-		//TODO: stub
+		RecipeHandler.registerRecipes(); //register the new recipes
 	}
 	
 	/**

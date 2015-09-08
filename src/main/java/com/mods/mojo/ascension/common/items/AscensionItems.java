@@ -21,19 +21,13 @@ public class AscensionItems {
 		Arrays.asList(new String[] {
 			"§oI always knew you were destined for great things.§r", //mark of ascension
 			"§8§oCare to join the winning side?§r\n\n" +
-					"Using this item will banish you to the outer dimensions." +
-					"\nYou will leave your inventory behind,\n" +
-					"along with your sanity.\n" +
-					"Refer to the Dark Pact document for more details.\n\n" +
-					"§4§oFeature not yet implemented; coming soon.§r", //seal of the dark pact
-			"§f§oThe ending has not yet been written...§r\n\n" +
+					"Using this object has... consequences." +
+					"\nYou should do your research beforehand.", //seal of the dark pact
+			"§f§oThe ending has not yet been written...§r" +
 					"Using this item will grant you op privileges\n" +
-					"on the server §lfor GM purposes only§r§f.\n" +
-					"Refer to the GM Ticket document for more details.\n\n" +
-					"§4§oFeature not yet implemented; coming soon.§r", //GM Ticket
+					"on the server §lfor GM purposes only§r§f.", //GM Ticket
 			"§9§oEveryone needs a little help sometimes.§r\n\n" +
-					"Use to gain an additional admin-save.\n\n" +
-					"§4§oFeature not yet implemented; coming soon§r" //admin save token
+					"Use to gain an additional admin-save." //admin save token
 		}), new TokenUseHandler()
 	);
 	

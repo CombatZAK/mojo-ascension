@@ -1,5 +1,7 @@
 package com.mods.mojo.ascension.common.items.crafting;
 
+import java.lang.reflect.Field;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
@@ -64,7 +66,9 @@ public class OwnerRecipeHelper {
 		Container location = null;
 		
 		try {
-			location = (Container)InventoryCrafting.class.getField("eventHanlder").get(grid); //stores the palce where the recipe is being crafted; get this by reflection
+			Field eventField = InventoryCrafting.class.getDeclaredField("eventHandler");
+			eventField.setAccessible(true);
+			location = (Container) eventField.get(grid); //stores the palce where the recipe is being crafted; get this by reflection
 		}
 		catch (Exception ex) {
 			System.exit(1); //crash
@@ -72,7 +76,9 @@ public class OwnerRecipeHelper {
 		
 		if (location instanceof ContainerPlayer) { //player crafting grid
 			try {
-				return (EntityPlayer)ContainerPlayer.class.getField("thePlayer").get(location);
+				Field thePlayerField = ContainerPlayer.class.getDeclaredField("thePlayer");
+				thePlayerField.setAccessible(true);
+				return (EntityPlayer)thePlayerField.get(location);
 			}
 			catch(Exception ex) { 
 				System.exit(1); //crash
@@ -82,7 +88,9 @@ public class OwnerRecipeHelper {
 			SlotCrafting slot = (SlotCrafting)location.getSlot(0); //get a slot from the grid
 			
 			try {
-				return (EntityPlayer)SlotCrafting.class.getField("thePlayer").get(slot);
+				Field thePlayerField = SlotCrafting.class.getDeclaredField("thePlayer");
+				thePlayerField.setAccessible(true);;
+				return (EntityPlayer)thePlayerField.get(slot);
 			}
 			catch (Exception ex) {
 				System.exit(1); //crash
@@ -90,7 +98,9 @@ public class OwnerRecipeHelper {
 		}
 		else if (location instanceof CraftingStationContainer) {
 			try {
-				return (EntityPlayer)CraftingStationContainer.class.getField("player").get(location);
+				Field playerField = CraftingStationContainer.class.getDeclaredField("player");
+				playerField.setAccessible(true);;
+				return (EntityPlayer)playerField.get(location);
 			}
 			catch (Exception ex) {
 				System.exit(1); //crash

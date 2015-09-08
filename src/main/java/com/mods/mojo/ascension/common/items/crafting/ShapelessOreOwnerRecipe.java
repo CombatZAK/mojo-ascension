@@ -11,7 +11,7 @@ public class ShapelessOreOwnerRecipe extends ShapelessOreRecipe {
 	/**
 	 * Creates a new ShapelessOreOwnerRecipe instance 
 	 */
-	public ShapelessOreOwnerRecipe(ItemStack result, Object[] recipe) {
+	public ShapelessOreOwnerRecipe(ItemStack result, Object... recipe) {
 		super(result, recipe);
 	}
 	
