@@ -13,7 +13,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
-import scala.actors.threadpool.Arrays;
 
 /**
  * Represents an Ascension Token or one of its derivatives and includes functionality for use and ownership

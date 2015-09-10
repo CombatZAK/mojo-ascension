@@ -13,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import scala.actors.threadpool.Arrays;
 
 /**
  * Represents an item with multiple, nondamageable subitems to be registered in FML
@@ -110,7 +109,7 @@ public class MojoMetaItem extends MojoItemBase {
 	}
 	
 	public MojoMetaItem() {
-		this(DEFAULT_STACK_SIZE, DEFAULT_CREATIVE_TAB, DEFAULT_ITEMID, Arrays.asList(new String[] { DEFAULT_TOOLTIP }));
+		this(DEFAULT_STACK_SIZE, DEFAULT_CREATIVE_TAB, DEFAULT_ITEMID, java.util.Arrays.asList(new String[] { DEFAULT_TOOLTIP }));
 	}
 	
 	/**

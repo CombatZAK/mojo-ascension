@@ -5,7 +5,6 @@ import com.mods.mojo.ascension.common.items.use.TokenUseHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
-import scala.actors.threadpool.Arrays;
 
 /**
  * Stores definition of items
@@ -18,7 +17,7 @@ public class AscensionItems {
 	 * Initialization of the token item
 	 */
 	private static TokenItem token = new TokenItem(64, CreativeTabs.tabMaterials, "token",
-		Arrays.asList(new String[] {
+		java.util.Arrays.asList(new String[] {
 			"§oI always knew you were destined for great things.§r", //mark of ascension
 			"§8§oCare to join the winning side?§r\n\n" +
 					"Using this object has... consequences." +

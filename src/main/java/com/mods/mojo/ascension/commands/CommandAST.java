@@ -9,7 +9,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.util.ChatComponentText;
-import scala.actors.threadpool.Arrays;
 
 public class CommandAST extends MojoCommand {
 	/**
@@ -292,7 +291,7 @@ public class CommandAST extends MojoCommand {
 		if (!(sender instanceof DedicatedServer) && !isPlayerOpped((EntityPlayer)sender)) return options; //no options for non-opped players
 		
 		if (tags == null || tags.length <= 1) {
-			return Arrays.asList(new String[] {"get", "give", "take"});
+			return java.util.Arrays.asList(new String[] {"get", "give", "take"});
 		}
 		else if (tags.length == 2) {
 			for (Object o : sender.getEntityWorld().playerEntities) {
@@ -326,7 +325,7 @@ public class CommandAST extends MojoCommand {
 	 * Default constructor
 	 */
 	public CommandAST() {
-		super("ast", Arrays.asList(new String[] {"admin-save"}), "ast", ProtectionLevel.NONE);
+		super("ast", java.util.Arrays.asList(new String[] {"admin-save"}), "ast", ProtectionLevel.NONE);
 	}
 
 	/**
