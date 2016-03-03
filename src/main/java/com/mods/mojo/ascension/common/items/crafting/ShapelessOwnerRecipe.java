@@ -51,4 +51,18 @@ public class ShapelessOwnerRecipe extends ShapelessRecipes {
 		
 		return true;
 	}
+	
+	/**
+	 * Gets a stack that is the result of the crafting recipe; sets the owner of the stack to specified player
+	 */
+	@Override
+	public ItemStack getCraftingResult(InventoryCrafting grid) {
+		ItemStack result = super.getCraftingResult(grid); //call parent method
+		EntityPlayer player = OwnerRecipeHelper.getPlayer(grid); //get the current player
+		
+		if (result == null || player == null || player.capabilities.isCreativeMode) return result; //stop under certain conditions
+		
+		OwnerRecipeHelper.setOwner(result, player.getDisplayName()); //set the owner of the stack
+		return result;
+	}
 }

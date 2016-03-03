@@ -22,9 +22,9 @@ public class AscensionItems {
 			"§8§oCare to join the winning side?§r\n\n" +
 					"Using this object has... consequences." +
 					"\nYou should do your research beforehand.", //seal of the dark pact
-			"§f§oThe ending has not yet been written...§r" +
+			"§f§oThe ending has not yet been written...\n§r" +
 					"Using this item will grant you op privileges\n" +
-					"on the server §lfor GM purposes only§r§f.", //GM Ticket
+					"on the server §lfor GM purposes only§r.", //GM Ticket
 			"§9§oEveryone needs a little help sometimes.§r\n\n" +
 					"Use to gain an additional admin-save." //admin save token
 		}), new TokenUseHandler()
